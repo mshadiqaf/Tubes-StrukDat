@@ -1,0 +1,10 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #e5e5e5);
+}
+
+.landing-button {
+    -fx-font-size: 16;
+    -fx-padding: 12 24 12 24;
+    -fx-text-fill: black;
+    -fx-background-radius: 32;
+}
