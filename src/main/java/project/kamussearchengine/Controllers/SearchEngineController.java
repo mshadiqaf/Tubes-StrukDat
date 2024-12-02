@@ -8,8 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -32,6 +34,9 @@ public class SearchEngineController implements Initializable {
     private AnchorPane rootPane;
 
     @FXML
+    private ToggleButton languageSwitch;
+
+    @FXML
     private VBox vBox;
 
     @FXML
@@ -43,7 +48,13 @@ public class SearchEngineController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            search();
+        });
+
         inputData();
+
+        dataENtoIN.printTree();
 
     }
 
@@ -52,41 +63,40 @@ public class SearchEngineController implements Initializable {
         resetEffect();
 
         String inputText = searchBar.getText().trim();
-
         vBoxResult.getChildren().clear();
-
-        System.out.println("Input: " + inputText);
 
         if (inputText.isEmpty()) {
             Label noInput = new Label("Masukkan teks untuk pencarian.");
             noInput.setStyle("-fx-font-size: 14; -fx-font-style: italic");
             VBox.setMargin(noInput, new Insets(10, 0, 10, 0)); // Menambahkan margin
             vBoxResult.getChildren().add(noInput);
-            resetEffect();
             return;
         }
 
-        List<Node> allNodes = dataINtoEN.getData();
+        System.out.println(languageSwitch.isSelected());
+
+        boolean isIndoToEng = languageSwitch.isSelected();
+
+        List<Node> allNodes = isIndoToEng ? dataENtoIN.getData() : dataINtoEN.getData();
         boolean foundContains = false;
 
-        for (int i = 0; i < allNodes.size(); i++) {
-            Node node = allNodes.get(i);
+        for (Node node : allNodes) {
             VBox dataContainer = new VBox();
 
             if (node.getWord().toLowerCase().startsWith(inputText.toLowerCase())) {
                 System.out.println("Word: " + node.getWord());
 
-                Label resultLabel = new Label("Kata ditemukan: " + node.getWord());
-                resultLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+                Label resultLabel = new Label(node.getWord());
+                resultLabel.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
                 VBox.setMargin(resultLabel, new Insets(12, 12, 5, 12)); // Menambahkan margin
                 dataContainer.getChildren().add(resultLabel);
 
-                Label wordTranslatedLabel = new Label("Bahasa Inggris: " + node.getWordTranslated());
+                Label wordTranslatedLabel = new Label("Bahasa " + (isIndoToEng ? "Indonesia: " + node.getWordTranslated() : "Inggris: " + node.getWordTranslated()));
                 wordTranslatedLabel.setStyle("-fx-font-size: 14;");
                 VBox.setMargin(wordTranslatedLabel, new Insets(0, 12, 5, 12));
                 dataContainer.getChildren().add(wordTranslatedLabel);
 
-                Label descIDLabel = new Label("Deskripsi (ID): " + node.getDesc());
+                Label descIDLabel = new Label("Deskripsi : " + node.getDesc());
                 descIDLabel.setStyle("-fx-font-size: 14;");
                 VBox.setMargin(descIDLabel, new Insets(0, 12, 5, 12));
                 dataContainer.getChildren().add(descIDLabel);
@@ -97,12 +107,7 @@ public class SearchEngineController implements Initializable {
                 dataContainer.getChildren().add(descENLabel);
 
                 if (node.getWord().equalsIgnoreCase(inputText)) {
-                    Runnable gimmick = node.getGimmick();
-                    if (gimmick != null) {
-                        gimmick.run();
-                    }
-
-                    resultLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: red;");
+                    resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 18; -fx-font-weight: bold;");
                     wordTranslatedLabel.setStyle("-fx-font-size: 14; -fx-text-fill: red;");
                     descIDLabel.setStyle("-fx-font-size: 14; -fx-text-fill: red;");
                     descENLabel.setStyle("-fx-font-size: 14; -fx-text-fill: red;");
@@ -113,7 +118,6 @@ public class SearchEngineController implements Initializable {
 
                 vBoxResult.getChildren().add(dataContainer);
 
-
                 foundContains = true;
             }
         }
@@ -123,7 +127,26 @@ public class SearchEngineController implements Initializable {
             noResults.setStyle("-fx-font-size: 14; -fx-font-style: italic");
             VBox.setMargin(noResults, new Insets(10, 0, 10, 0)); // Menambahkan margin
             vBoxResult.getChildren().add(noResults);
-            resetEffect();
+        }
+    }
+
+    @FXML
+    private void searchGimmick() {
+
+        boolean isIndoToEng = languageSwitch.isSelected();
+
+        String inputText = searchBar.getText().trim();
+
+        List<Node> allNodes = isIndoToEng ? dataENtoIN.getData() : dataINtoEN.getData();
+
+        for (Node node : allNodes) {
+            if (node.getWord().equalsIgnoreCase(inputText)) {
+                Runnable gimmick = node.getGimmick();
+                if (gimmick != null) {
+                    System.out.println("Menjalankan gimmick untuk kata: " + node.getWord());
+                    gimmick.run();
+                }
+            }
         }
     }
 
@@ -146,14 +169,13 @@ public class SearchEngineController implements Initializable {
         return () -> {
             // Membuat efek flip 3D pada rootPane
             RotateTransition flipTransition = new RotateTransition(Duration.seconds(1), rootPane);
-            flipTransition.setAxis(Rotate.Y_AXIS); // Anda bisa mengganti sumbu ke Z atau Y tergantung efek yang diinginkan
+            flipTransition.setAxis(Rotate.Y_AXIS); // Flip pada sumbu Y
             flipTransition.setFromAngle(0);
             flipTransition.setToAngle(180); // Flip 180 derajat
             flipTransition.setInterpolator(Interpolator.EASE_BOTH);
             flipTransition.setCycleCount(1);
 
             flipTransition.setOnFinished(event -> {
-                // Setelah flip selesai, dapat mengembalikan elemen ke posisi semula
                 RotateTransition resetFlip = new RotateTransition(Duration.seconds(1), rootPane);
                 resetFlip.setAxis(Rotate.Y_AXIS); // Sama seperti flip pertama
                 resetFlip.setFromAngle(180);
@@ -175,6 +197,7 @@ public class SearchEngineController implements Initializable {
     private void inputData() {
 
         allData.add(new RawNode("Abadi", "Eternal", "Tidak pernah berakhir, berlangsung selamanya.", "Never-ending, lasts forever."));
+        allData.add(new RawNode("Abadi Selamanya", "Antos", "Tidak pernah berakhir, berlangsung selamanya.", "Never-ending, lasts forever."));
         allData.add(new RawNode("Adil", "Fair", "Tidak memihak, sesuai aturan atau keadilan.", "Impartial, in accordance with justice."));
         allData.add(new RawNode("Aktif", "Active", "Selalu bergerak atau berpartisipasi.", "Always moving or participating."));
         allData.add(new RawNode("Alam", "Nature", "Lingkungan fisik yang ada di sekitar kita.", "The physical environment around us."));

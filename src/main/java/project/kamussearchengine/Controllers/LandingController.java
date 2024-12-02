@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -35,11 +36,12 @@ public class LandingController {
     private void loadMain(ActionEvent event) throws IOException {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/project/kamussearchengine/Views/SearchEngineView.fxml")));
-            Scene mainPageScene = new Scene(root);
 
             Stage stage = (Stage) rootPane.getScene().getWindow();
             double prevWidth = stage.getWidth();
             double prevHeight = stage.getHeight();
+
+            Scene mainPageScene = new Scene(root, prevWidth, prevHeight, true, SceneAntialiasing.BALANCED);
 
             stage.setScene(mainPageScene);
             stage.setWidth(prevWidth);

@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -16,11 +18,15 @@
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <VBox fx:id="vBox" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField fx:id="searchBar" maxHeight="42.0" maxWidth="360.0" minHeight="42.0" minWidth="360.0" onKeyTyped="#search" prefHeight="42.0" prefWidth="360.0" styleClass="searchbar" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" maxHeight="42.0" spacing="24.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets left="32.0" top="32.0" />
+                  <Insets left="32.0" right="32.0" top="32.0" />
                </VBox.margin>
-            </TextField>
+               <children>
+                  <TextField fx:id="searchBar" maxHeight="42.0" maxWidth="360.0" minHeight="42.0" minWidth="360.0" onAction="#searchGimmick" prefHeight="42.0" prefWidth="360.0" promptText="Search for A Keyword" styleClass="searchbar" />
+                  <ToggleButton fx:id="languageSwitch" mnemonicParsing="false" onAction="#search" text="ToggleButton" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
             <Label styleClass="resultlabel" text="Result" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="32.0" top="24.0" />

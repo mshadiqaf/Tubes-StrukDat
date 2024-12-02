@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.stage.Stage;
 import project.kamussearchengine.Controllers.SearchEngineController;
 
@@ -15,7 +16,7 @@ public class DictionarySearchEngine extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Views/LandingView.fxml")));
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 600, true, SceneAntialiasing.BALANCED);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Styles/Landing.css")).toExternalForm());
 
         stage.setTitle("ISI | Maps Interaktif");
