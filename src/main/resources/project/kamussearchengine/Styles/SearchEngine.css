@@ -1,7 +1,118 @@
 .root {
+    -fx-background-color: gray-100;
+
+    /* variables */
+
+    /* GRAY */
+
+    gray-25: #FCFCFD;
+    gray-50: #F9FAFB;
+    gray-100: #F2F4F7;
+    gray-200: #EAECF0;
+    gray-300: #D0D5DD;
+    gray-400: #98A2B3;
+    gray-500: #667085;
+    gray-600: #475467;
+    gray-700: #344054;
+    gray-800: #182230;
+    gray-900: #101828;
+    gray-950: #0C111D;
+
+    /* BLUE */
+
+    blue-50: #EBEEFD;
+    blue-100: #BFCCF8;
+    blue-200: #A1B3F4;
+    blue-300: #7690F0;
+    blue-400: #5B7AED;
+    blue-500: #3259E8;
+    blue-600: #2E51D3;
+    blue-700: #243FA5;
+    blue-800: #1C3180;
+    blue-900: #152561;
 
 }
 
 .searchbar {
-    -fx-background-radius: 36;
+    -fx-background-color: white;
+    -fx-background-radius: 32;
+    -fx-border-width: 1;
+    -fx-border-color: gray-300;
+    -fx-border-radius: 32;
+    -fx-text-fill: black;
+    -fx-padding: 8 16 8 16;
 }
+
+.searchbar:hover {
+    -fx-border-color: #C3C9D1;
+}
+
+.searchbar:focused {
+    -fx-effect: dropshadow(gaussian, #0000002a, 24, 0, 0, 4);
+    -fx-border-color: blue-500;
+}
+
+.scrollpane {
+    -fx-background-color: gray-50;
+    -fx-background-radius: 24;
+    -fx-border-color: gray-200;
+    -fx-border-width: 1;
+    -fx-border-style: solid outside;
+    -fx-border-radius: 24;
+    -fx-padding: 0 0 0 0;
+}
+
+.scrollpane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 12 8 12 0;
+}
+
+.scrollpane .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2em;
+}
+
+.scrollpane .scroll-bar:vertical .decrement-button,
+.scrollpane .scroll-bar:vertical .increment-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 0 12 0 0;
+}
+
+.scrollpane .scroll-bar .increment-arrow,
+.scrollpane .scroll-bar .decrement-arrow {
+    -fx-padding: -2;
+}
+
+.scrollpane .scroll-bar:vertical .thumb {
+    -fx-background-color: gray-700;
+}
+
+.scrollpane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: gray-600;
+}
+
+.vboxpane {
+    -fx-background-color: gray-50; ;
+    -fx-background-radius: 24 0 0 24;
+    -fx-border-radius: 24 0 0 24;
+    -fx-border-color: transparent;
+}
+
+.resultcontainer {
+
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, white, gray-100);
+    -fx-background-radius: 24;
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, gray-200, gray-300);
+    -fx-effect: dropshadow(gaussian, #00000003, 12, 0, 0, 8);
+    -fx-border-radius: 24;
+}
+
+.resultlabel {
+    -fx-font-family: "Helvetica SemiBold";
+}
+
+
